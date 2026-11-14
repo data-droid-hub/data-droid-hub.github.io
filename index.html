@@ -71,30 +71,20 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   <style>
-    @property --sweep-angle {
-      syntax: "<angle>";
-      initial-value: 0deg;
-      inherits: false;
-    }
-
     :root {
       --bg: #0D1014;
-      --surface: #141921;
-      --surface-elevated: #1A212C;
-      --border: #262F3D;
-      --border-strong: #374357;
+      --surface: #131820;
+      --border: #232C3B;
+      --border-strong: #344156;
       --fg: #F4F5F0;
-      --muted: #9DA7B7;
+      --muted: #9BA5B5;
       --accent: #FF4D2E;
       --accent-ink: #0D1014;
       --font-display: "Syne", "IBM Plex Sans", system-ui, sans-serif;
       --font-body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
       --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -119,26 +109,25 @@
       min-height: 100vh;
     }
 
-    body {
-      position: relative;
-      overflow-x: hidden;
+    a {
+      color: inherit;
+      text-decoration: none;
+      text-underline-offset: 4px;
     }
 
-    #telemetry-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
     }
 
     .shell {
-      position: relative;
-      z-index: 1;
-      max-width: 1220px;
+      max-width: 880px;
       margin: 0 auto;
-      padding: 28px 24px 64px;
+      padding: 28px 24px 56px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .topbar {
@@ -150,899 +139,337 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .brand-lockup {
-      display: flex;
+    .brand {
+      display: inline-flex;
       align-items: center;
-      gap: 14px;
-    }
-
-    .brand-lockup svg {
-      width: 36px;
-      height: 36px;
-      flex-shrink: 0;
-    }
-
-    .brand-name {
-      font-size: 1.15rem;
+      gap: 12px;
       font-weight: 700;
+      font-size: 1.05rem;
       letter-spacing: -0.02em;
     }
 
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
+    .brand svg {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
     }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-    }
-
-    .hero-header {
-      margin-top: 36px;
-      margin-bottom: 28px;
+    .nav-links {
       display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      justify-content: space-between;
+      align-items: center;
       gap: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--fg);
+    }
+
+    .hero {
+      padding: 68px 0 56px;
+      border-bottom: 1px solid var(--border);
     }
 
     h1 {
       margin: 0;
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+      font-size: clamp(2.4rem, 5.2vw, 3.6rem);
       font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.02;
+      letter-spacing: -0.035em;
+      line-height: 1.04;
+      max-width: 16ch;
+      text-wrap: balance;
     }
 
-    .hero-lead {
-      margin: 12px 0 0;
-      max-width: 62ch;
+    .lead {
+      margin: 20px 0 0;
+      max-width: 56ch;
+      font-size: 1.08rem;
+      line-height: 1.6;
       color: var(--muted);
-      font-size: 1.02rem;
-      line-height: 1.55;
     }
 
-    .workspace {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.85fr);
-      gap: 24px;
-      align-items: start;
-    }
-
-    @media (max-width: 920px) {
-      .workspace {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .stage-panel {
-      background: rgba(18, 22, 29, 0.9);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .stage-toolbar {
+    .actions {
+      margin-top: 32px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
-
-    .tab-group {
-      display: inline-flex;
-      gap: 4px;
-      background: var(--bg);
-      padding: 4px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-    }
-
-    button {
-      font-family: inherit;
-      cursor: pointer;
-      border: 0;
-      background: transparent;
-      color: inherit;
-      transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease, transform 120ms ease;
-    }
-
-    button:focus-visible, a:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .tab-btn {
-      padding: 7px 12px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--muted);
-    }
-
-    .tab-btn[aria-pressed="true"] {
-      background: var(--surface-elevated);
-      color: var(--fg);
-    }
-
-    .tab-btn:hover:not([aria-pressed="true"]) {
-      color: var(--fg);
-    }
-
-    .stage-viewport {
-      position: relative;
-      min-height: 410px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 24px;
-      transition: background-color 220ms ease;
-    }
-
-    .stage-viewport[data-surface="dark"] { background: #0A0C10; }
-    .stage-viewport[data-surface="light"] { background: #ECEEE7; color: #0D1014; }
-    .stage-viewport[data-surface="apify"] { background: #141820; }
-    .stage-viewport[data-surface="github"] { background: #0D1117; }
-
-    .orbit-ring {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      border-radius: 50%;
-    }
-
-    .orbit-ring::before {
-      content: "";
-      position: absolute;
-      inset: -14px;
-      border-radius: 50%;
-      border: 1px dashed rgba(157, 167, 183, 0.28);
-      pointer-events: none;
-    }
-
-    .stage-viewport[data-surface="light"] .orbit-ring::before {
-      border-color: rgba(13, 16, 20, 0.18);
-    }
-
-    .mark-frame {
-      width: 248px;
-      height: 248px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), border-radius 220ms ease;
-    }
-
-    .stage-viewport[data-surface="github"] .mark-frame {
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid #30363D;
-    }
-
-    .mark-frame svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .apify-card-mock {
-      display: none;
-      align-items: center;
-      gap: 20px;
-      max-width: 480px;
-      width: 100%;
-      padding: 22px;
-      background: #1B212C;
-      border: 1px solid #2D3647;
-      border-radius: 14px;
-    }
-
-    .stage-viewport[data-surface="apify"] .orbit-ring { display: none; }
-    .stage-viewport[data-surface="apify"] .apify-card-mock { display: flex; }
-
-    .apify-card-icon {
-      width: 76px;
-      height: 76px;
-      flex-shrink: 0;
-    }
-
-    .apify-card-icon svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .apify-card-meta .apify-card-title {
-      margin: 0 0 4px;
-      font-size: 1.08rem;
-      font-weight: 700;
-      color: #F4F5F0;
-    }
-
-    .apify-card-author {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .apify-card-desc {
-      margin: 0;
-      font-size: 0.86rem;
-      line-height: 1.45;
-      color: #9DA7B7;
-    }
-
-    .scale-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-    }
-
-    @media (max-width: 560px) {
-      .scale-strip {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .scale-cell {
-      padding: 18px 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 10px;
-      border-right: 1px solid var(--border);
-      min-height: 132px;
-    }
-
-    .scale-cell:last-child { border-right: 0; }
-
-    .scale-label {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .controls-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .control-box {
-      border-top: 1px solid var(--border);
-      padding: 18px 0 6px;
-    }
-
-    .control-box h2 {
-      margin: 0 0 14px;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    .swatch-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .swatch-btn {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: var(--bg);
-      font-size: 0.85rem;
-      font-weight: 500;
-      text-align: left;
-    }
-
-    .swatch-btn[aria-pressed="true"] {
-      border-color: var(--accent);
-      background: var(--surface-elevated);
-    }
-
-    .swatch-chip {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      flex-shrink: 0;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .export-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      gap: 16px;
     }
 
     .btn-primary {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: var(--radius-sm);
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 8px;
       background: var(--accent);
       color: var(--accent-ink);
       font-weight: 700;
-      font-size: 0.92rem;
+      font-size: 0.94rem;
+      transition: filter 140ms ease, transform 120ms ease;
     }
 
-    .btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
-    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
 
-    .btn-secondary-row {
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .link-quiet {
+      padding: 10px 4px;
+      font-size: 0.94rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 140ms ease;
+    }
+
+    .link-quiet:hover {
+      color: var(--fg);
+      text-decoration: underline;
+    }
+
+    .actor-row {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      grid-template-columns: 56px minmax(0, 1fr) auto;
+      gap: 20px 24px;
+      align-items: center;
+    }
+
+    .actor-icon {
+      width: 56px;
+      height: 56px;
+    }
+
+    .actor-title {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .actor-desc {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.5;
+      max-width: 54ch;
+    }
+
+    .actor-specs {
+      margin: 12px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--fg);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .actor-specs span {
+      color: var(--muted);
     }
 
     .btn-secondary {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 12px;
-      border-radius: var(--radius-sm);
-      background: var(--bg);
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 8px;
       border: 1px solid var(--border-strong);
+      background: var(--surface);
       color: var(--fg);
+      font-size: 0.88rem;
       font-weight: 600;
-      font-size: 0.84rem;
-      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      transition: border-color 140ms ease, background-color 140ms ease;
     }
 
     .btn-secondary:hover {
-      background: var(--surface-elevated);
       border-color: var(--muted);
+      background: #1A212C;
     }
 
-    .spec-list {
+    .pillars {
+      padding: 36px 0;
       display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 8px 16px;
-      margin: 0;
-      font-size: 0.84rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
     }
 
-    .spec-list dt {
+    .pillar h2 {
+      margin: 0;
+      font-size: 0.98rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .pillar p {
+      margin: 8px 0 0;
+      font-size: 0.9rem;
+      line-height: 1.55;
       color: var(--muted);
-      font-family: var(--font-mono);
     }
 
-    .spec-list dd {
-      margin: 0;
-      text-align: right;
-      font-family: var(--font-mono);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .lockup-banner {
-      margin-top: 24px;
+    .footer {
+      margin-top: auto;
+      padding-top: 24px;
       border-top: 1px solid var(--border);
-      padding: 24px 0;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
+      font-size: 0.84rem;
+      color: var(--muted);
     }
 
-    .lockup-render {
+    .footer-links {
       display: flex;
-      align-items: center;
-      gap: 20px;
+      flex-wrap: wrap;
+      gap: 18px;
     }
 
-    .lockup-render svg {
-      width: 64px;
-      height: 64px;
-      flex-shrink: 0;
+    .footer-links a:hover {
+      color: var(--fg);
+      text-decoration: underline;
     }
 
-    .lockup-title {
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-    }
+    @media (max-width: 720px) {
+      .hero {
+        padding: 44px 0 40px;
+      }
 
-    .lockup-sub {
-      margin-top: 4px;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-    }
+      .actor-row {
+        grid-template-columns: 48px minmax(0, 1fr);
+      }
 
-    .export-toast {
-      margin-top: 10px;
-      min-height: 20px;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--muted);
+      .actor-icon {
+        width: 48px;
+        height: 48px;
+      }
+
+      .actor-row .btn-secondary {
+        grid-column: 1 / -1;
+        justify-self: start;
+      }
+
+      .pillars {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         transition-duration: 0.01ms !important;
-        animation-duration: 0.01ms !important;
       }
     }
   </style>
 </head>
 <body>
-  <canvas id="telemetry-canvas" aria-hidden="true"></canvas>
-
   <main class="shell">
     <header class="topbar">
-      <div class="brand-lockup" id="nav-mark-slot">
-        <span class="brand-name">data-droid-hub</span>
-      </div>
-      <div class="status-pill">
-        <span class="status-dot" aria-hidden="true"></span>
-        <span id="pointer-coords">GRID 000 · 000</span>
-      </div>
+      <a class="brand" href="./">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" aria-hidden="true">
+          <rect width="512" height="512" rx="108" fill="#0D1014"/>
+          <rect x="16" y="16" width="480" height="480" rx="94" stroke="#222833" stroke-width="2"/>
+          <path d="M117.44 214V176L256 96L394.56 176V214" stroke="#F4F5F0" stroke-width="28" stroke-linejoin="miter"/>
+          <path d="M394.56 298V336L256 416L117.44 336V298" stroke="#F4F5F0" stroke-width="28" stroke-linejoin="miter"/>
+          <path d="M72 256H126M386 256H440" stroke="#FF4D2E" stroke-width="20"/>
+          <rect x="162" y="206" width="188" height="100" rx="50" fill="#161B22" stroke="#2E3746" stroke-width="4"/>
+          <rect x="196" y="238" width="36" height="36" rx="10" fill="#F4F5F0"/>
+          <circle cx="298" cy="256" r="24" fill="#FF4D2E"/>
+          <circle cx="298" cy="256" r="9" fill="#0D1014"/>
+          <circle cx="256" cy="96" r="14" fill="#FF4D2E"/>
+          <circle cx="256" cy="416" r="12" fill="#F4F5F0"/>
+        </svg>
+        <span>data-droid-hub</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="https://apify.com/data-droid-hub" target="_blank" rel="noopener noreferrer">Apify Store</a>
+        <a href="https://github.com/data-droid-hub" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
     </header>
 
-    <section class="hero-header">
+    <section class="hero">
+      <h1>Zero-proxy Rust data extraction.</h1>
+      <p class="lead">
+        Compiled HTTP/2 Actors and MCP-ready intelligence pipelines on Apify Store. Sub-second runs with no headless browsers and no residential proxy overhead.
+      </p>
+      <div class="actions">
+        <a class="btn-primary" href="https://apify.com/data-droid-hub" target="_blank" rel="noopener noreferrer">
+          Browse Actors on Apify
+        </a>
+        <a class="link-quiet" href="https://github.com/data-droid-hub" target="_blank" rel="noopener noreferrer">
+          github.com/data-droid-hub
+        </a>
+      </div>
+    </section>
+
+    <section class="actor-row" aria-label="Featured Actor">
+      <svg class="actor-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" aria-hidden="true">
+        <rect width="512" height="512" rx="108" fill="#0D1014"/>
+        <rect x="16" y="16" width="480" height="480" rx="94" stroke="#232934" stroke-width="2"/>
+        <path d="M96 164V112C96 103.163 103.163 96 112 96H164" stroke="#3A4556" stroke-width="12" stroke-linecap="square"/>
+        <path d="M348 96H400C408.837 96 416 103.163 416 112V164" stroke="#3A4556" stroke-width="12" stroke-linecap="square"/>
+        <path d="M416 348V400C416 408.837 408.837 416 400 416H348" stroke="#3A4556" stroke-width="12" stroke-linecap="square"/>
+        <path d="M164 416H112C103.163 416 96 408.837 96 400V348" stroke="#3A4556" stroke-width="12" stroke-linecap="square"/>
+        <circle cx="256" cy="256" r="120" fill="#151A22" stroke="#F4F5F0" stroke-width="22"/>
+        <circle cx="256" cy="256" r="44" fill="#FF4D2E"/>
+        <path d="M244 236L280 256L244 276V236Z" fill="#0D1014"/>
+        <circle cx="341" cy="171" r="13" fill="#F4F5F0"/>
+        <circle cx="341" cy="171" r="5" fill="#FF4D2E"/>
+      </svg>
       <div>
-        <h1>data-droid-hub</h1>
-        <p class="hero-lead">
-          Precision telemetry identity built for zero-proxy Rust extraction actors. Inspect legibility from 24px Store favicons to 1024px publisher avatars and export production SVG or PNG assets directly.
+        <h2 class="actor-title">Google Ads Transparency Scraper</h2>
+        <p class="actor-desc">
+          Extracts active and historical search, display, and YouTube creatives, ad copy, and country reach directly from Google Ads Transparency Center.
         </p>
+        <div class="actor-specs">
+          <div><span>Run</span> 0.2s–1.2s</div>
+          <div><span>Memory</span> 256 MB</div>
+          <div><span>Pricing</span> $0.0008 / creative</div>
+          <div><span>Proxies</span> $0</div>
+        </div>
+      </div>
+      <a class="btn-secondary" href="https://apify.com/data-droid-hub/google-ads-transparency-actor" target="_blank" rel="noopener noreferrer">
+        Run Actor
+      </a>
+    </section>
+
+    <section class="pillars" aria-label="Architecture">
+      <div class="pillar">
+        <h2>Direct HTTP/2 Rust RPC</h2>
+        <p>No Playwright or Chromium tax. Compiled binaries cut runtime by 10–30x and run reliably in 256 MB containers.</p>
+      </div>
+      <div class="pillar">
+        <h2>Incremental Daily Diffs</h2>
+        <p>Watermark deduplication emits only net-new items on scheduled runs so pipelines avoid duplicate rows and billing.</p>
+      </div>
+      <div class="pillar">
+        <h2>MCP &amp; Agent Ready</h2>
+        <p>Strict typed JSON schemas, dry-run cost estimation, and Pay-Per-Event billing built for Claude, Cursor, n8n, and Clay.</p>
       </div>
     </section>
 
-    <section class="workspace" aria-label="Logo Inspector and Export Studio">
-      <div class="stage-panel">
-        <div class="stage-toolbar">
-          <div class="tab-group" role="group" aria-label="Asset selection">
-            <button type="button" class="tab-btn" data-asset="hub" aria-pressed="true">Publisher Mark</button>
-            <button type="button" class="tab-btn" data-asset="actor" aria-pressed="false">Ads Transparency Actor</button>
-          </div>
-          <div class="tab-group" role="group" aria-label="Surface preview">
-            <button type="button" class="tab-btn" data-surface-btn="dark" aria-pressed="true">Obsidian</button>
-            <button type="button" class="tab-btn" data-surface-btn="light" aria-pressed="false">Bone</button>
-            <button type="button" class="tab-btn" data-surface-btn="apify" aria-pressed="false">Apify Card</button>
-            <button type="button" class="tab-btn" data-surface-btn="github" aria-pressed="false">GitHub</button>
-          </div>
-        </div>
-
-        <div class="stage-viewport" id="stage-viewport" data-surface="dark">
-          <div class="orbit-ring">
-            <div class="mark-frame" id="primary-stage-slot"></div>
-          </div>
-          <div class="apify-card-mock">
-            <div class="apify-card-icon" id="apify-card-slot"></div>
-            <div class="apify-card-meta">
-              <div class="apify-card-title" id="card-title">data-droid-hub</div>
-              <div class="apify-card-author">apify.com/data-droid-hub</div>
-              <p class="apify-card-desc" id="card-desc">
-                Zero-proxy Rust data extraction actors for competitive intelligence and automated B2B pipelines.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="scale-strip" aria-label="Scale stress test">
-          <div class="scale-cell">
-            <div class="scale-slot" data-size="24" style="width:24px;height:24px;"></div>
-            <span class="scale-label">24 px</span>
-          </div>
-          <div class="scale-cell">
-            <div class="scale-slot" data-size="48" style="width:48px;height:48px;"></div>
-            <span class="scale-label">48 px</span>
-          </div>
-          <div class="scale-cell">
-            <div class="scale-slot" data-size="72" style="width:72px;height:72px;"></div>
-            <span class="scale-label">72 px</span>
-          </div>
-          <div class="scale-cell">
-            <div class="scale-slot" data-size="96" style="width:96px;height:96px;"></div>
-            <span class="scale-label">96 px</span>
-          </div>
-        </div>
-      </div>
-
-      <aside class="controls-panel">
-        <div class="control-box">
-          <h2>Signal Accent</h2>
-          <div class="swatch-grid" role="group" aria-label="Signal color">
-            <button type="button" class="swatch-btn" data-accent="#FF4D2E" aria-pressed="true">
-              <span class="swatch-chip" style="background:#FF4D2E"></span>
-              Vermilion
-            </button>
-            <button type="button" class="swatch-btn" data-accent="#00D2FF" aria-pressed="false">
-              <span class="swatch-chip" style="background:#00D2FF"></span>
-              Cyan Pulse
-            </button>
-            <button type="button" class="swatch-btn" data-accent="#B8FF29" aria-pressed="false">
-              <span class="swatch-chip" style="background:#B8FF29"></span>
-              Electric Volt
-            </button>
-            <button type="button" class="swatch-btn" data-accent="#F4F5F0" aria-pressed="false">
-              <span class="swatch-chip" style="background:#F4F5F0"></span>
-              Monochrome
-            </button>
-          </div>
-        </div>
-
-        <div class="control-box">
-          <h2>Export Production Assets</h2>
-          <div class="export-stack">
-            <button type="button" class="btn-primary" id="btn-dl-svg">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M8 2V10M8 10L4.5 6.5M8 10L11.5 6.5M2.5 13.5H13.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/>
-              </svg>
-              Download Vector SVG
-            </button>
-            <div class="btn-secondary-row">
-              <button type="button" class="btn-secondary" data-png-size="512">PNG 512px</button>
-              <button type="button" class="btn-secondary" data-png-size="1024">PNG 1024px</button>
-            </div>
-          </div>
-          <div class="export-toast" id="export-toast" role="status" aria-live="polite"></div>
-        </div>
-
-        <div class="control-box">
-          <h2>Geometry Specification</h2>
-          <dl class="spec-list">
-            <dt>GRID</dt><dd>512 × 512 px</dd>
-            <dt>CORNER RADIUS</dt><dd>108 px (21%)</dd>
-            <dt>HEX STROKE</dt><dd>28 px miter</dd>
-            <dt>OBSIDIAN</dt><dd>#0D1014</dd>
-            <dt>BONE</dt><dd>#F4F5F0</dd>
-            <dt>SIGNAL</dt><dd id="spec-accent">#FF4D2E</dd>
-          </dl>
-        </div>
-      </aside>
-    </section>
-
-    <section class="lockup-banner" aria-label="Horizontal wordmark lockup">
-      <div class="lockup-render">
-        <div id="lockup-mark-slot"></div>
-        <div>
-          <div class="lockup-title" id="lockup-wordmark" style="font-family:var(--font-display)">
-            data<span class="dash">-</span>droid<span class="dash">-</span>hub
-          </div>
-          <div class="lockup-sub">ZERO-PROXY DATA EXTRACTION ACTORS</div>
-        </div>
-      </div>
-      <button type="button" class="btn-secondary" id="btn-dl-lockup">Download Lockup SVG</button>
-    </section>
-
-    <footer style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);">
-      <span>PUBLISHED BY <strong style="color:var(--fg);">data-droid-hub</strong> · ZERO-PROXY RUST &amp; MCP ACTORS</span>
-      <nav aria-label="Publisher links" style="display:flex;flex-wrap:wrap;gap:16px;">
-        <a href="https://apify.com/data-droid-hub" target="_blank" rel="noopener noreferrer" style="color:var(--fg);text-decoration:none;">Apify Publisher</a>
-        <a href="https://apify.com/data-droid-hub/google-ads-transparency-actor" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;">Google Ads Transparency Scraper</a>
-        <a href="./llms.txt" style="color:var(--muted);text-decoration:none;">llms.txt</a>
-        <a href="./llms-full.txt" style="color:var(--muted);text-decoration:none;">llms-full.txt</a>
+    <footer class="footer">
+      <span>data-droid-hub</span>
+      <nav class="footer-links" aria-label="Links">
+        <a href="https://apify.com/data-droid-hub" target="_blank" rel="noopener noreferrer">Apify</a>
+        <a href="https://github.com/data-droid-hub" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="./llms.txt">llms.txt</a>
+        <a href="./llms-full.txt">llms-full.txt</a>
       </nav>
     </footer>
   </main>
-
-  <script>
-    (() => {
-      const state = {
-        asset: 'hub',
-        surface: 'dark',
-        accent: '#FF4D2E'
-      };
-
-      function buildHubSvg(accent, lightGround) {
-        const bg = lightGround ? '#F4F5F0' : '#0D1014';
-        const border = lightGround ? '#D8DCE2' : '#222833';
-        const tick = lightGround ? '#C5CCD6' : '#2C3442';
-        const hex = lightGround ? '#0D1014' : '#F4F5F0';
-        const visorFill = lightGround ? '#0D1014' : '#161B22';
-        const visorStroke = lightGround ? 'none' : '#2E3746';
-        const coreDot = '#0D1014';
-        const bottomDot = lightGround ? '#0D1014' : '#F4F5F0';
-        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
-  <rect width="512" height="512" rx="108" fill="${bg}"/>
-  <rect x="16" y="16" width="480" height="480" rx="94" stroke="${border}" stroke-width="2"/>
-  <path d="M256 34V58M256 454V478M34 256H58M454 256H478" stroke="${tick}" stroke-width="4" stroke-linecap="butt"/>
-  <path d="M117.44 214V176L256 96L394.56 176V214" stroke="${hex}" stroke-width="28" stroke-linecap="butt" stroke-linejoin="miter"/>
-  <path d="M394.56 298V336L256 416L117.44 336V298" stroke="${hex}" stroke-width="28" stroke-linecap="butt" stroke-linejoin="miter"/>
-  <path d="M72 256H126" stroke="${accent}" stroke-width="20" stroke-linecap="butt"/>
-  <path d="M386 256H440" stroke="${accent}" stroke-width="20" stroke-linecap="butt"/>
-  <rect x="162" y="206" width="188" height="100" rx="50" fill="${visorFill}" ${visorStroke !== 'none' ? `stroke="${visorStroke}" stroke-width="4"` : ''}/>
-  <rect x="196" y="238" width="36" height="36" rx="10" fill="#F4F5F0"/>
-  <circle cx="298" cy="256" r="24" fill="${accent}"/>
-  <circle cx="298" cy="256" r="9" fill="${coreDot}"/>
-  <circle cx="256" cy="96" r="14" fill="${accent}"/>
-  <circle cx="256" cy="416" r="12" fill="${bottomDot}"/>
-</svg>`;
-      }
-
-      function buildActorSvg(accent, lightGround) {
-        const bg = lightGround ? '#F4F5F0' : '#0D1014';
-        const border = lightGround ? '#D8DCE2' : '#232934';
-        const frame = lightGround ? '#9AA3B2' : '#3A4556';
-        const ring = lightGround ? '#0D1014' : '#F4F5F0';
-        const lens = lightGround ? '#0D1014' : '#151A22';
-        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
-  <rect width="512" height="512" rx="108" fill="${bg}"/>
-  <rect x="16" y="16" width="480" height="480" rx="94" stroke="${border}" stroke-width="2"/>
-  <path d="M96 164V112C96 103.163 103.163 96 112 96H164" stroke="${frame}" stroke-width="12" stroke-linecap="square"/>
-  <path d="M348 96H400C408.837 96 416 103.163 416 112V164" stroke="${frame}" stroke-width="12" stroke-linecap="square"/>
-  <path d="M416 348V400C416 408.837 408.837 416 400 416H348" stroke="${frame}" stroke-width="12" stroke-linecap="square"/>
-  <path d="M164 416H112C103.163 416 96 408.837 96 400V348" stroke="${frame}" stroke-width="12" stroke-linecap="square"/>
-  <circle cx="256" cy="256" r="120" fill="${lens}" stroke="${ring}" stroke-width="22"/>
-  <circle cx="256" cy="256" r="74" stroke="#2D3646" stroke-width="4" stroke-dasharray="10 10"/>
-  <circle cx="256" cy="256" r="44" fill="${accent}"/>
-  <path d="M244 236L280 256L244 276V236Z" fill="#0D1014"/>
-  <circle cx="341" cy="171" r="20" fill="${bg}"/>
-  <circle cx="341" cy="171" r="13" fill="${ring}"/>
-  <circle cx="341" cy="171" r="5" fill="${accent}"/>
-</svg>`;
-      }
-
-      function currentSvg() {
-        const isLight = state.surface === 'light';
-        return state.asset === 'hub'
-          ? buildHubSvg(state.accent, isLight)
-          : buildActorSvg(state.accent, isLight);
-      }
-
-      function render() {
-        document.documentElement.style.setProperty('--accent', state.accent);
-        const monoInk = state.accent === '#F4F5F0' ? '#0D1014' : '#0D1014';
-        document.documentElement.style.setProperty('--accent-ink', monoInk);
-        document.getElementById('spec-accent').textContent = state.accent;
-
-        const svg = currentSvg();
-        document.getElementById('primary-stage-slot').innerHTML = svg;
-        document.getElementById('apify-card-slot').innerHTML = svg;
-        document.getElementById('stage-viewport').dataset.surface = state.surface;
-
-        const navMark = buildHubSvg(state.accent, false);
-        const navSlot = document.getElementById('nav-mark-slot');
-        const oldNavSvg = navSlot.querySelector('svg');
-        if (oldNavSvg) oldNavSvg.remove();
-        navSlot.insertAdjacentHTML('afterbegin', navMark);
-
-        document.getElementById('lockup-mark-slot').innerHTML = navMark;
-        document.querySelectorAll('#lockup-wordmark .dash').forEach(el => {
-          el.style.color = state.accent;
-        });
-
-        document.querySelectorAll('.scale-slot').forEach(slot => {
-          slot.innerHTML = svg;
-          const s = slot.querySelector('svg');
-          const px = slot.dataset.size;
-          s.setAttribute('width', px);
-          s.setAttribute('height', px);
-        });
-
-        const titleEl = document.getElementById('card-title');
-        const descEl = document.getElementById('card-desc');
-        if (state.asset === 'hub') {
-          titleEl.textContent = 'data-droid-hub';
-          descEl.textContent = 'Zero-proxy Rust data extraction actors for competitive intelligence and automated B2B pipelines.';
-        } else {
-          titleEl.textContent = 'Google Ads Transparency Intelligence';
-          descEl.textContent = 'Fast zero-proxy Rust RPC scraper with incremental diffs, YouTube copy extraction, and MCP schema.';
-        }
-      }
-
-      document.querySelectorAll('[data-asset]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          state.asset = btn.dataset.asset;
-          document.querySelectorAll('[data-asset]').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-          render();
-        });
-      });
-
-      document.querySelectorAll('[data-surface-btn]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          state.surface = btn.dataset.surfaceBtn;
-          document.querySelectorAll('[data-surface-btn]').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-          render();
-        });
-      });
-
-      document.querySelectorAll('[data-accent]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          state.accent = btn.dataset.accent;
-          document.querySelectorAll('[data-accent]').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-          render();
-        });
-      });
-
-      function triggerDownload(blob, filename) {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        document.getElementById('export-toast').textContent = `Exported ${filename}`;
-      }
-
-      document.getElementById('btn-dl-svg').addEventListener('click', () => {
-        const name = state.asset === 'hub' ? 'data-droid-hub-mark.svg' : 'google-ads-transparency-icon.svg';
-        triggerDownload(new Blob([currentSvg()], { type: 'image/svg+xml' }), name);
-      });
-
-      document.querySelectorAll('[data-png-size]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const size = Number(btn.dataset.pngSize);
-          const svg = currentSvg();
-          const img = new Image();
-          const svgBlob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-          const url = URL.createObjectURL(svgBlob);
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = size;
-            canvas.height = size;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, size, size);
-            URL.revokeObjectURL(url);
-            canvas.toBlob(pngBlob => {
-              const name = state.asset === 'hub'
-                ? `data-droid-hub-mark-${size}.png`
-                : `google-ads-transparency-icon-${size}.png`;
-              triggerDownload(pngBlob, name);
-            }, 'image/png');
-          };
-          img.src = url;
-        });
-      });
-
-      document.getElementById('btn-dl-lockup').addEventListener('click', () => {
-        const mark = buildHubSvg(state.accent, false);
-        const inner = mark.replace(/<svg[^>]*>/, '').replace('</svg>', '');
-        const lockup = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="1200" height="320" fill="none">
-  <rect width="1200" height="320" rx="28" fill="#0D1014"/>
-  <g transform="translate(48, 48) scale(0.4375)">${inner}</g>
-  <text x="320" y="176" fill="#F4F5F0" font-family="Space Grotesk, Inter, sans-serif" font-size="76" font-weight="700" letter-spacing="-2.5">data<tspan fill="${state.accent}">-</tspan>droid<tspan fill="${state.accent}">-</tspan>hub</text>
-  <text x="324" y="226" fill="#8C96A6" font-family="JetBrains Mono, monospace" font-size="22" font-weight="500" letter-spacing="3.5">ZERO-PROXY DATA EXTRACTION ACTORS</text>
-</svg>`;
-        triggerDownload(new Blob([lockup], { type: 'image/svg+xml' }), 'data-droid-hub-lockup.svg');
-      });
-
-      // Overdrive 60fps Canvas 2D Optical Telemetry Lattice
-      const canvas = document.getElementById('telemetry-canvas');
-      const ctx = canvas.getContext('2d');
-      const coordsEl = document.getElementById('pointer-coords');
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const pointer = { x: window.innerWidth * 0.45, y: window.innerHeight * 0.45 };
-      let dpr = Math.min(window.devicePixelRatio || 1, 2);
-      let w = 0, h = 0;
-      const packets = [];
-      const GRID = 64;
-
-      function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        w = window.innerWidth;
-        h = window.innerHeight;
-        canvas.width = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-
-      for (let i = 0; i < 22; i++) {
-        packets.push({
-          gx: Math.floor(Math.random() * 24) * GRID,
-          gy: Math.floor(Math.random() * 14) * GRID,
-          dir: i % 2 === 0 ? 1 : 0,
-          speed: 1.2 + Math.random() * 1.8,
-          len: 24 + Math.random() * 44
-        });
-      }
-
-      window.addEventListener('pointermove', e => {
-        pointer.x = e.clientX;
-        pointer.y = e.clientY;
-        const gx = String(Math.round(e.clientX)).padStart(3, '0');
-        const gy = String(Math.round(e.clientY)).padStart(3, '0');
-        coordsEl.textContent = `GRID ${gx} · ${gy}`;
-      }, { passive: true });
-
-      window.addEventListener('resize', resize);
-      resize();
-
-      function drawFrame() {
-        ctx.clearRect(0, 0, w, h);
-
-        // Subtle Swiss coordinate dots + cursor field
-        for (let x = 0; x <= w; x += GRID) {
-          for (let y = 0; y <= h; y += GRID) {
-            const dx = x - pointer.x;
-            const dy = y - pointer.y;
-            const dist = Math.hypot(dx, dy);
-            const influence = Math.max(0, 1 - dist / 240);
-            ctx.fillStyle = influence > 0.05
-              ? `rgba(255, 255, 255, ${0.08 + influence * 0.25})`
-              : 'rgba(157, 167, 183, 0.08)';
-            const r = 1 + influence * 1.4;
-            ctx.fillRect(x - r * 0.5, y - r * 0.5, r, r);
-          }
-        }
-
-        if (!reducedMotion) {
-          ctx.lineWidth = 1.5;
-          for (const p of packets) {
-            if (p.dir === 1) {
-              p.gx += p.speed;
-              if (p.gx - p.len > w) p.gx = -p.len;
-              ctx.strokeStyle = `${state.accent}44`;
-              ctx.beginPath();
-              ctx.moveTo(p.gx - p.len, p.gy);
-              ctx.lineTo(p.gx, p.gy);
-              ctx.stroke();
-              ctx.fillStyle = state.accent;
-              ctx.fillRect(p.gx - 1.5, p.gy - 1.5, 3, 3);
-            } else {
-              p.gy += p.speed;
-              if (p.gy - p.len > h) p.gy = -p.len;
-              ctx.strokeStyle = 'rgba(244, 245, 240, 0.16)';
-              ctx.beginPath();
-              ctx.moveTo(p.gx, p.gy - p.len);
-              ctx.lineTo(p.gx, p.gy);
-              ctx.stroke();
-              ctx.fillStyle = '#F4F5F0';
-              ctx.fillRect(p.gx - 1.5, p.gy - 1.5, 3, 3);
-            }
-          }
-        }
-      }
-
-      let rafId = 0;
-      function loop() {
-        if (!document.hidden) {
-          drawFrame();
-        }
-        if (!reducedMotion) {
-          rafId = requestAnimationFrame(loop);
-        }
-      }
-
-      render();
-      drawFrame();
-      if (!reducedMotion) {
-        rafId = requestAnimationFrame(loop);
-      }
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && !reducedMotion && !rafId) {
-          rafId = requestAnimationFrame(loop);
-        } else if (document.hidden && rafId) {
-          cancelAnimationFrame(rafId);
-          rafId = 0;
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
