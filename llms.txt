@@ -3,7 +3,7 @@
 > Zero-proxy Rust data extraction Actors and MCP-ready intelligence pipelines on Apify Store.
 
 - Canonical Publisher Profile: https://apify.com/data-droid-hub
-- GitHub Pages Hub: https://dandyzicky.github.io/data-droid-hub/
+- GitHub Pages Hub: https://data-droid-hub.github.io/
 - Primary Stack: Compiled Rust, HTTP/2 pooled RPC (`rustls`), zero headless browser overhead, Apify Pay-Per-Event (PPE), Model Context Protocol (MCP).
 
 ## Published Actors
@@ -12,4 +12,4 @@
 
 ## Extended Documentation
 
-- [Full Technical & Schema Reference](https://dandyzicky.github.io/data-droid-hub/llms-full.txt): Benchmarks, Pay-Per-Event pricing tables, full JSON input/output schemas, Python/Node.js/MCP integration examples, and FAQ.
+- [Full Technical & Schema Reference](https://data-droid-hub.github.io/llms-full.txt): Benchmarks, Pay-Per-Event pricing tables, full JSON input/output schemas, Python/Node.js/MCP integration examples, and FAQ.

@@ -1,7 +1,7 @@
 # data-droid-hub — Full Technical & GEO Reference
 
 > Publisher: data-droid-hub (https://apify.com/data-droid-hub)
-> Hub URL: https://dandyzicky.github.io/data-droid-hub/
+> Hub URL: https://data-droid-hub.github.io/
 > Core Thesis: Replace slow, proxy-heavy headless browser scrapers with compiled Rust HTTP/2 RPC Actors engineered for AI agents, Apify MCP, n8n, and Clay workflows.
 
 ## Architecture Principles

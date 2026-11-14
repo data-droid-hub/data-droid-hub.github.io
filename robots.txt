@@ -17,4 +17,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://dandyzicky.github.io/data-droid-hub/sitemap.xml
+Sitemap: https://data-droid-hub.github.io/sitemap.xml

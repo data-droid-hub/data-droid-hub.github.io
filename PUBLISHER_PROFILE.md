@@ -3,8 +3,8 @@
 Paste these fields into **Apify Console -> Account Settings -> Profile** (Apify's public REST API does not expose a `PUT /v2/users/me` profile-edit endpoint):
 
 - **Name:** `Data Droid` (or `data-droid-hub`)
-- **GitHub Username:** `dandyZicky`
-- **Website URL:** `https://dandyzicky.github.io/data-droid-hub/`
+- **GitHub Username:** `data-droid-hub`
+- **Website URL:** `https://data-droid-hub.github.io/`
 - **Bio (160 chars):**
   `Zero-proxy Rust Apify Actors & MCP-ready web intelligence pipelines. Sub-second HTTP/2 RPC extraction with incremental daily diffs and transparent PPE pricing.`
 
@@ -30,7 +30,7 @@ Paste these fields into **Apify Console -> Account Settings -> Profile** (Apify'
 
 ## Links
 
-- **Hub & Technical Specs:** [dandyzicky.github.io/data-droid-hub](https://dandyzicky.github.io/data-droid-hub/)
-- **LLM Index:** [llms.txt](https://dandyzicky.github.io/data-droid-hub/llms.txt)
-- **GitHub:** [@dandyZicky](https://github.com/dandyZicky)
+- **Hub & Technical Specs:** [data-droid-hub.github.io](https://data-droid-hub.github.io/)
+- **LLM Index:** [llms.txt](https://data-droid-hub.github.io/llms.txt)
+- **GitHub:** [@data-droid-hub](https://github.com/data-droid-hub)
 ```
